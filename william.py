@@ -1,50 +1,47 @@
 import streamlit as st
 from googletrans import Translator
 
-translator = Translator()
-
-# Function to translate Shakespearean English to Modern English
-def shakespearean_to_modern(text):
-    try:
-        translated = translator.translate(text, src='en', dest='en-shakespeare').text
-    except Exception as e:
-        st.error("Translation error: {}".format(str(e)))
-        return None
+def translate_shakespeare_to_english(text):
+    translator = Translator()
+    translated = translator.translate(text, src='en', dest='en').text
     return translated
 
-# Function to translate Modern English to Shakespearean English
-def modern_to_shakespearean(text):
-    try:
-        translated = translator.translate(text, src='en', dest='en').text
-    except Exception as e:
-        st.error("Translation error: {}".format(str(e)))
-        return None
+def translate_english_to_shakespeare(text):
+    translator = Translator()
+    translated = translator.translate(text, src='en', dest='en-shakespeare').text
     return translated
 
-# Streamlit app UI
 def main():
-    st.set_page_config(page_title="Shakespearean to Modern English Translator", layout="centered", initial_sidebar_state="collapsed")
+    st.set_page_config(page_title="General Translator", layout="centered", initial_sidebar_state="collapsed")
 
-    st.title("Shakespearean to Modern English Translator")
-    st.subheader("Translate text between Shakespearean English and Modern English")
+    st.title("General Translator")
+    st.subheader("Translate between Shakespearean English and Modern English")
 
-    # Input text area
-    text = st.text_area("Enter text to translate:")
+    st.markdown("---")
 
-    if text:
-        # Translate Shakespearean English to Modern English
-        translated_modern = shakespearean_to_modern(text)
-        if translated_modern:
-            st.markdown("### Modern English Translation:")
-            st.write(translated_modern)
+    st.header("Shakespearean to English")
+    shakespeare_text = st.text_area("Enter Shakespearean text to translate:", height=150)
+    if st.button("Translate to English"):
+        if shakespeare_text:
+            translation = translate_shakespeare_to_english(shakespeare_text)
+            st.markdown(f"**Translated to English:**\n{translation}")
+        else:
+            st.warning("Please enter some Shakespearean text.")
 
-        st.markdown("---")
+    st.markdown("---")
 
-        # Translate Modern English to Shakespearean English
-        translated_shakespearean = modern_to_shakespearean(text)
-        if translated_shakespearean:
-            st.markdown("### Shakespearean English Translation:")
-            st.write(translated_shakespearean)
+    st.header("English to Shakespearean")
+    modern_text = st.text_area("Enter Modern English text to translate:", height=150)
+    if st.button("Translate to Shakespearean"):
+        if modern_text:
+            translation = translate_english_to_shakespeare(modern_text)
+            st.markdown(f"**Translated to Shakespearean:**\n{translation}")
+        else:
+            st.warning("Please enter some Modern English text.")
+
+    st.markdown("---")
+
+    st.markdown("Created by Anurag ❤️")
 
 if __name__ == "__main__":
     main()
